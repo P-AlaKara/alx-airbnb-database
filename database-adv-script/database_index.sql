@@ -15,3 +15,10 @@ CREATE INDEX idx_bookings_start_date
 -- Properties table indexes
 CREATE INDEX idx_properties_name
     ON properties(name);
+
+--sample perfomance checking
+EXPLAIN ANALYZE
+SELECT *
+FROM bookings b
+JOIN users u ON b.user_id = u.id
+WHERE u.email = 'test@example.com';
