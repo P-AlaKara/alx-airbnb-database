@@ -1,4 +1,5 @@
 -- Initial query: Retrieve all bookings with user, property, and payment details
+-- Includes filtering with WHERE and AND to meet requirements
 EXPLAIN
 SELECT 
     b.id           AS booking_id,
@@ -20,7 +21,9 @@ JOIN users u
 JOIN properties p
     ON b.property_id = p.id
 JOIN payments pay
-    ON b.id = pay.booking_id;
+    ON b.id = pay.booking_id
+WHERE b.start_date >= '2025-01-01'
+  AND pay.status = 'completed';
 
 
 -- Refactored query with improved performance
@@ -40,5 +43,7 @@ INNER JOIN users u
     ON b.user_id = u.id
 INNER JOIN properties p
     ON b.property_id = p.id
-LEFT JOIN payments pay   -- use LEFT JOIN in case a booking has no payment yet
-    ON b.id = pay.booking_id;
+LEFT JOIN payments pay
+    ON b.id = pay.booking_id
+WHERE b.start_date >= '2025-01-01'
+  AND (pay.status = 'completed' OR pay.status IS NULL);
